@@ -1,7 +1,5 @@
 package com.company;
 
-import com.sun.jdi.CharType;
-
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -11,7 +9,7 @@ public class Calculate {
 
     public static double calculate(String str) {
         if (checkStr(str)) { //проверяем выражение на коректность
-            HashMap<Character, Double> variables = new HashMap<>();
+            HashMap<Character, Double> variables = new HashMap<>();//хранит имя и значение переменных
             return countStr(str, variables); //считаем и выводим ответ
         }
         return -1;
@@ -23,7 +21,7 @@ public class Calculate {
             if (str.charAt(0) == '(' && str.charAt(str.length() - 1) == ')') //если выражение состоит из скобок
                 return countStr(str.substring(1, str.length() - 1), variables); //считаем внутри скобок
             else
-                if (str.length() > 4)
+                if (str.length() > 4) //работа с фунциями
                 {
                     switch (str.substring(0, 4)) {
                         case "sin(":
@@ -33,11 +31,11 @@ public class Calculate {
                         case "tan(":
                             return tan(countStr(str.substring(4, str.length() - 1), variables));
                         case "ctg(":
-                            return atan(countStr(str.substring(4, str.length() - 1), variables));
+                            return 1/tan(countStr(str.substring(4, str.length() - 1), variables));
                         case "log(":
                             return log(countStr(str.substring(4, str.length() - 1), variables));
                         default:
-                            return getVariable(str, variables);
+                            return getVariable(str, variables); // значит попало число размерности 4
                     }
                 }
                 else
@@ -76,7 +74,7 @@ public class Calculate {
     }
 
     /*
-    проверяет строку на коректность
+    проверяет строку на корректность
     */
     private static boolean checkStr(String str) {
         int n = str.length();
@@ -112,6 +110,11 @@ public class Calculate {
         }
     }
 
+
+    /*
+    выдает значение переменной или, если она еще не существует запрашивает ее.
+    если входная строка число возвращает ее значение
+     */
     private static double getVariable(String str, HashMap<Character, Double> variables) {
         if(str.length() ==1) {
             char c =str.charAt(0);
